@@ -12,11 +12,13 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String TAG = MainActivity.class.getSimpleName();
+    private String LOG_TAG = MainActivity.class.getSimpleName();
     private Toolbar toolbar;
     private SearchView searchView;
     private ArrayList<Store> stores = new ArrayList<>();
@@ -57,7 +59,15 @@ public class MainActivity extends AppCompatActivity {
             HttpHandler httpHandler = new HttpHandler();
             // Request URL
             String url = "http://sandbox.bottlerocketapps.com/BR_Android_CodingExam_2015_Server/stores.json";
-            String jsonStr = httpHandler.makeServiceCall(url);
+
+            String jsonStr = null;
+
+            try {
+                jsonStr = httpHandler.makeServiceCall(url);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+            }
+
 
             if (jsonStr != null) {
                 try {
@@ -85,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         stores.add(store);
                     }
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    Log.e(LOG_TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -96,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             } else {
-                Log.e(TAG, "Error, fail to retrieve stores data from server.");
+                Log.e(LOG_TAG, "Error, fail to retrieve stores data from server.");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

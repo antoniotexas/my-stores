@@ -48,12 +48,10 @@ public class HttpHandler {
             if(conn.getResponseCode() == 200){
                 // read the response
                 inputStream = conn.getInputStream();
-                response       = convertStreamToString(inputStream);
+                response    = convertStreamToString(inputStream);
             }else{
                 Log.e(LOG_TAG, "Error response code: " + conn.getResponseCode());
             }
-
-
         } catch (ProtocolException e) {
             Log.e( LOG_TAG, "ProtocolException: " + e.getMessage());
         } catch (IOException e) {
@@ -73,7 +71,9 @@ public class HttpHandler {
 
     //Returns new URL object from the given string URL
     private static URL createUrl(String stringUrl) {
+
         URL url = null;
+
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e) {
@@ -84,16 +84,20 @@ public class HttpHandler {
 
     //Convert the inputStream into a String which contains the JSON response from server
     private String convertStreamToString(InputStream is) throws IOException {
+
         StringBuilder output = new StringBuilder();
+
         if (is != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(is, Charset.forName("UTF-8"));
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
+
             while (line != null) {
                 output.append(line);
                 line = reader.readLine();
             }
         }
+
         return output.toString();
     }
 }

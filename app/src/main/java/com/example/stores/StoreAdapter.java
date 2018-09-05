@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,8 @@ import com.squareup.picasso.Picasso;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHolder> implements Filterable {
 
-    private ArrayList<Store> stores;
-    private ArrayList<Store> filterStores;
+    private List<Store> stores;
+    private List<Store> filterStores;
     private Context context;
 
     // Provide a reference to the views for each data item
@@ -41,7 +43,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public StoreAdapter(Context context, ArrayList<Store> stores) {
+    public StoreAdapter(Context context, List<Store> stores) {
         this.context      = context;
         this.stores       = stores;
         this.filterStores = stores;
@@ -79,11 +81,9 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-
         if (filterStores == null) {
             return 0;
         }
-
         return filterStores.size();
     }
 
@@ -100,7 +100,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
                     results.values = stores;
                 } else {//do the search
                     String searchStr = constraint.toString().toUpperCase();
-                    ArrayList<Store> resultsData = new ArrayList<>();
+                    List<Store> resultsData = new ArrayList<>();
                     for (Store store : stores)
                         if (store.getName().toUpperCase().contains(searchStr)) {
                             resultsData.add(store);
@@ -113,7 +113,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results.count != 0) {
-                    filterStores = (ArrayList<Store>) results.values;
+                    filterStores = (List<Store>) results.values;
                     notifyDataSetChanged();
                 }
             }

@@ -23,10 +23,6 @@ public class StoreProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_profile);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         storeLogo    = findViewById(R.id.logo);
         storeAddress = findViewById(R.id.store_address);
         storePhone   = findViewById(R.id.store_phone);

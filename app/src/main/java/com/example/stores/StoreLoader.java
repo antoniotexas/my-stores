@@ -38,3 +38,10 @@ public class StoreLoader extends AsyncTaskLoader<List<Store>> {
         return stores;
     }
 }
+
+
+
+//rosa fuentes
+
+
+

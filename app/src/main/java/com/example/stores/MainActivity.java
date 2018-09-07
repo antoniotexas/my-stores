@@ -1,7 +1,9 @@
 package com.example.stores;
 
 import android.app.LoaderManager;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,9 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.SearchView;
+import android.view.MenuInflater;
+import android.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String REQUEST_URL =
             "http://sandbox.bottlerocketapps.com/BR_Android_CodingExam_2015_Server/stores.json";
 
-    private Toolbar toolbar;
+    //private Toolbar toolbar;
     private SearchView searchView;
     private List<Store> stores = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -36,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
-        setTitle("Stores");
-        setSupportActionBar(toolbar);
+        //toolbar = findViewById(R.id.toolbar);
+        //setTitle("Stores");
+        //setSupportActionBar(toolbar);
 
         // get the reference of RecyclerView
         recyclerView = findViewById(R.id.recycler_view);
@@ -82,20 +85,51 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         storeAdapter.notifyDataSetChanged();
     }
 
-    public void searchField(){
 
-        searchView = findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
-            @Override
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                actionSearch(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void actionSearch(MenuItem item){
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) item.getActionView();
+
+        if (null != searchView) {
+            searchView.setSearchableInfo(searchManager
+                    .getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String s) {
                 storeAdapter.getFilter().filter(s);
-                    return true;
+                return true;
             }
-        });
+
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
     }
 
 }

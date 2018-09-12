@@ -1,5 +1,6 @@
 package com.example.stores;
 
+import android.app.Dialog;
 import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +26,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+
     private static final int LOADER_ID = 1;
 
     private static final String REQUEST_URL =
             "http://sandbox.bottlerocketapps.com/BR_Android_CodingExam_2015_Server/stores.json";
 
-    //private Toolbar toolbar;
-    private SearchView searchView;
     private List<Store> stores = new ArrayList<>();
     private RecyclerView recyclerView;
     private StoreAdapter storeAdapter;
@@ -38,10 +41,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //toolbar = findViewById(R.id.toolbar);
-        //setTitle("Stores");
-        //setSupportActionBar(toolbar);
 
         // get the reference of RecyclerView
         recyclerView = findViewById(R.id.recycler_view);
@@ -73,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<List<Store>> loader, List<Store> data) {
 
+        stores.clear();
+
         if (data != null && !data.isEmpty()) {
             stores.addAll(data);
             storeAdapter.notifyDataSetChanged();
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         stores.clear();
         storeAdapter.notifyDataSetChanged();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,11 +105,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-
     public void actionSearch(MenuItem item){
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
         SearchView searchView = (SearchView) item.getActionView();
 
         if (null != searchView) {
@@ -131,5 +129,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         searchView.setOnQueryTextListener(queryTextListener);
     }
-
 }

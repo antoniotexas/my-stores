@@ -7,7 +7,6 @@
     tools:context="com.example.stores.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"

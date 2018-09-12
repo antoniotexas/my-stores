@@ -2,14 +2,12 @@ package com.example.stores;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 
-public class StoreProfile extends AppCompatActivity {
+public class StoreProfile extends AppCompatActivity{
 
     private ImageView storeLogo;
     private TextView storeAddress;
@@ -45,7 +43,6 @@ public class StoreProfile extends AppCompatActivity {
             storeId.setText(store.getStoreId());
             storeLongitude.setText(store.getLongitude());
             storeLatitude.setText(store.getLatitude());
-
         }
     }
 
@@ -58,4 +55,5 @@ public class StoreProfile extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
